@@ -18,14 +18,12 @@ var createScene = function(){
     camera.attachControl(canvas, false);
     camera.upperBetaLimit = 1.57;
     camera.lowerBetaLimit = 0.4;
+    
+    camera.upperRadiusLimit = 500;
+    camera.lowerRadiusLimit = 200;
 
     light1 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(200, 200, 100), scene);
     light2 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(-400, 500, -400), scene);
-
-    // sphere = BABYLON.Mesh.CreateSphere('sphere1', 16, 2, scene);
-    // sphere.position.y = 1;
-
-    // ground = BABYLON.Mesh.CreateGround('ground1', 6, 6, 2, scene);
 
     //load babylon model
     var assetsManager = new BABYLON.AssetsManager(scene);
@@ -35,13 +33,8 @@ var createScene = function(){
         // task.loadedMeshes[0].position = new BABYLON.Vector3(0, 0, 0);
         // engine.loadingUIText = "Loaded asset " + task.loadedMeshes[0].name;
         
-        // let material = task.loadedMeshes[0].material = new BABYLON.StandardMaterial('mat', scene);
-        // material.emissiveColor = BABYLON.Color3.Blue();
-        // material.diffuseColor = BABYLON.Color3.Yellow();
-
         console.log("load task successed");
-        console.log(task.loadedMeshes)
-
+        // console.log(task.loadedMeshes)
     }
 
     meshTask.onError = function(task,message,exception){
@@ -49,6 +42,7 @@ var createScene = function(){
     }
 
     assetsManager.load();
+
     return scene;
 }
 
