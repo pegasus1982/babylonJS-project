@@ -16,6 +16,8 @@ var createScene = function(){
     
     camera = new BABYLON.ArcRotateCamera("Camera", 4, 1, 300, new BABYLON.Vector3(0,30,0), scene);
     camera.attachControl(canvas, false);
+    camera.upperBetaLimit = 1.57;
+    camera.lowerBetaLimit = 0.4;
 
     light1 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(200, 200, 100), scene);
     light2 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(-400, 500, -400), scene);
@@ -32,8 +34,14 @@ var createScene = function(){
     meshTask.onSuccess = function (task) {
         // task.loadedMeshes[0].position = new BABYLON.Vector3(0, 0, 0);
         // engine.loadingUIText = "Loaded asset " + task.loadedMeshes[0].name;
+        
+        // let material = task.loadedMeshes[0].material = new BABYLON.StandardMaterial('mat', scene);
+        // material.emissiveColor = BABYLON.Color3.Blue();
+        // material.diffuseColor = BABYLON.Color3.Yellow();
+
         console.log("load task successed");
         console.log(task.loadedMeshes)
+
     }
 
     meshTask.onError = function(task,message,exception){
