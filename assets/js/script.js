@@ -2,7 +2,7 @@ var canvas = document.getElementById('renderCanvas');
 const ANIM_DURATION = 15;
 
 // load the 3D engine
-var engine = new BABYLON.Engine(canvas, true);
+var engine = new BABYLON.Engine(canvas, true, { stencil: true });
 
 var scene,
     camera,
@@ -13,7 +13,7 @@ var scene,
     ground;
 
 var loadedModel = [];
-
+let n_HighlightTimeCount = 0;
 var createScene = function(){
     scene = new BABYLON.Scene(engine);
     
@@ -76,6 +76,10 @@ function addSectionAnimation(model,offset){
 
 function addIlluminateAnimation(model){
     console.log('illuminate',model)
+    var hl = new BABYLON.HighlightLayer("hl", scene);
+    hl.blurHorizontalSize   = 2;
+    hl.blurVerticalSize     = 2;
+    hl.addMesh(model, BABYLON.Color3.Red());
 }
 
 document.getElementById('btn-remove').addEventListener('click',function(){
@@ -113,17 +117,22 @@ document.getElementById('btn-remove').addEventListener('click',function(){
             //check tube
             if(loadedModel[i].name.includes('tube-') && !loadedModel[i].name.includes('tube-sticker')){
                 var tubeNum = parseInt(loadedModel[i].name.substring(5,7));
-                if(tubeNum == (num + 1)) 
+                if(tubeNum == (num + 1)){
+                    let tmpModel = loadedModel[i];
                     setTimeout(() => {
-                        addIlluminateAnimation(loadedModel[i]);
+                        addIlluminateAnimation(tmpModel);
                     }, 1000);
+                }
             }
             if(loadedModel[i].name.includes('tube-sticker-')){
                 var stickerNum = parseInt(loadedModel[i].name.substring(14,17));
                 if(stickerNum == (num + 1))
+                {
+                    let tmpModel = loadedModel[i];
                     setTimeout(() => {
-                        addIlluminateAnimation(loadedModel[i]);
+                        addIlluminateAnimation(tmpModel);
                     }, 1000);
+                }
             }
         }
         else{
