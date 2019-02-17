@@ -75,7 +75,6 @@ function addSectionAnimation(model,offset){
 }
 
 function addIlluminateAnimation(model){
-    console.log('illuminate',model)
     var hl = new BABYLON.HighlightLayer("hl", scene);
     hl.blurHorizontalSize   = 2;
     hl.blurVerticalSize     = 2;
