@@ -1,4 +1,5 @@
 var canvas = document.getElementById('renderCanvas');
+const ANIM_DURATION = 15;
 
 // load the 3D engine
 var engine = new BABYLON.Engine(canvas, true);
@@ -11,6 +12,8 @@ var scene,
     sphere,
     ground;
 // createScene function that creates and return the scene
+
+var loadedModel = [];
 var createScene = function(){
     scene = new BABYLON.Scene(engine);
     
@@ -33,8 +36,7 @@ var createScene = function(){
         // task.loadedMeshes[0].position = new BABYLON.Vector3(0, 0, 0);
         // engine.loadingUIText = "Loaded asset " + task.loadedMeshes[0].name;
         
-        console.log("load task successed",task.loadedMeshes);
-        // console.log(task.loadedMeshes)
+        loadedModel = task.loadedMeshes;
     }
 
     meshTask.onError = function(task,message,exception){
@@ -58,3 +60,40 @@ engine.runRenderLoop(function(){
 window.addEventListener('resize', function(){
     engine.resize();
 });
+
+function addAnimation(model,offset){
+    var animBox = new BABYLON.Animation("anim-"+model.name,"position.y",30,BABYLON.Animation.ANIMATIONTYPE_FLOAT);
+    var keys = [];
+    keys.push({
+        frame : 0,
+        value : model.position.y,
+    });
+    keys.push({
+        frame : ANIM_DURATION,
+        value : model.position.y + offset,
+    })
+    animBox.setKeys(keys);
+    model.animations.push(animBox);
+    scene.beginAnimation(model, 0, ANIM_DURATION, false);
+}
+document.getElementById('btn-remove').addEventListener('click',function(){
+    var num = parseInt(document.getElementById('input-num').value);
+    if(num <= 0 || num > 20) return;
+    if(num > 10){
+        for(var i in loadedModel){
+            // console.log(loadedModel[i].name)
+            if(loadedModel[i].name == 'section-01') addAnimation(loadedModel[i],90);
+            if(loadedModel[i].name == 'section-02') addAnimation(loadedModel[i],48);
+            if(loadedModel[i].name.includes('tube-') && !loadedModel[i].name.includes('tube-sticker')){
+                var tubeNum = parseInt(loadedModel[i].name.substring(5,7));
+                if(tubeNum < 12) addAnimation(loadedModel[i],90);
+                else addAnimation(loadedModel[i],48);
+            }
+            if(loadedModel[i].name.includes('tube-sticker-')){
+                var stickerNum = parseInt(loadedModel[i].name.substring(14,17));
+                if(stickerNum < 12) addAnimation(loadedModel[i],90);
+                else addAnimation(loadedModel[i],48);
+            }
+        }
+    }
+})
