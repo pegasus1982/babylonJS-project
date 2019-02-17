@@ -33,7 +33,7 @@ var createScene = function(){
         // task.loadedMeshes[0].position = new BABYLON.Vector3(0, 0, 0);
         // engine.loadingUIText = "Loaded asset " + task.loadedMeshes[0].name;
         
-        console.log("load task successed");
+        console.log("load task successed",task.loadedMeshes);
         // console.log(task.loadedMeshes)
     }
 
